@@ -11,56 +11,32 @@ namespace FlightExaminator
 {
     public class SimulatorRunner
     {
-        string SimulatorPath { get; set; }
-        string SimulatorCongifFilePath { get; set; }
-        string FlightDataPath { get; set; }
-        List<string> FlightDataList { get; }
-        int MiliSecondsBetweenIterations { get; set; }
-        int NextDataLocation { get; set; }
-        int Port { get; set; }
-        bool InsertData { get; set; }
-        bool Running { get; set; }
+        public string SimulatorPath { get; set; }
+        public string SimulatorCongifFilePath { get; set; }
+        public string FlightDataPath { get; set; }
+        private List<string> FlightDataList { get; set; }
+        public int MiliSecondsBetweenIterations { get; set; }
+        public int NextDataLocation { get; set; }
+        private int Port { get; set; }
+        public bool InsertData { get; set; }
+        public bool Ready { get; set; }
         
 
-        public SimulatorRunner(string configFilePath, string simulatorPath, string flightDataFilePath, int port)
+        public SimulatorRunner(int port)
         {
-            SimulatorPath = simulatorPath;
-            SimulatorCongifFilePath = configFilePath;
-            FlightDataPath = flightDataFilePath;
             Port = port;
             MiliSecondsBetweenIterations = 100;
             NextDataLocation = 0;
             InsertData = false;
-            Running = false;
-
-            if (!File.Exists(SimulatorCongifFilePath))
-            {
-                throw new FileNotFoundException($"Config file {SimulatorCongifFilePath} not found");
-            }
-            if (!File.Exists(FlightDataPath))
-            {
-                throw new FileNotFoundException($"Flight data {FlightDataPath} file not found");
-            }
-            if (!Directory.Exists(SimulatorPath))
-            {
-                throw new DirectoryNotFoundException($"Simulator directory {SimulatorPath} not found");
-            }
-
-            string line;
-            FlightDataList = new List<string>();
-            StreamReader dataStreamReader = new StreamReader(FlightDataPath);
-            while((line = dataStreamReader.ReadLine()) != null)
-            {
-                FlightDataList.Add(line);
-            }
-            dataStreamReader.Close();
-
-            UploadConfigFile();
-            StartSimulator();
+            Ready = false;
         }
 
-        private void UploadConfigFile()
+        public void UploadConfigFile()
         {
+             if (String.IsNullOrEmpty(SimulatorPath))
+            {
+                throw new Exception("Please configure simulator directory first");
+            }
             string configFileName = Path.GetFileName(SimulatorCongifFilePath);
             string pathToUploadConfig = SimulatorPath + $@"\data\Protocol\{configFileName}";
             try
@@ -78,7 +54,19 @@ namespace FlightExaminator
             }
         }
 
-        private void StartSimulator()
+        public void UploadDataFile()
+        {
+            string line;
+            FlightDataList = new List<string>();
+            StreamReader dataStreamReader = new StreamReader(FlightDataPath);
+            while ((line = dataStreamReader.ReadLine()) != null)
+            {
+                FlightDataList.Add(line);
+            }
+            dataStreamReader.Close();
+        }
+
+        public void StartSimulator()
         {
             string configFileName = Path.GetFileNameWithoutExtension(SimulatorCongifFilePath);
             Process process = new Process();
@@ -92,19 +80,14 @@ namespace FlightExaminator
 
         public void InsertDataTask()
         {
-            if (Running) return;
+            if (!Ready) return;
             InsertData = true;
-            Running = true;
             Thread thread = new Thread(InsertDataToSimulator);
             thread.Start();
         }
 
         private void InsertDataToSimulator()
         {
-            while (!CheckServerAvailability())
-            {
-                Thread.Sleep(1000);
-            }
             TcpClient client = new TcpClient("127.0.0.1", Port);
             NetworkStream stream = client.GetStream();
             while (InsertData)
@@ -123,21 +106,30 @@ namespace FlightExaminator
             }
             stream.Close();
             client.Close();
-            Running = false;
         }
 
-        private bool CheckServerAvailability()
+        public void CheckServerAvailability()
         {
-            try
+            for (int i = 0; i < 600; i++)
             {
-                TcpClient client = new TcpClient("127.0.0.1", Port);
-                client.Close();
-                return true;
+                try
+                {
+                    TcpClient client = new TcpClient("127.0.0.1", Port);
+                    client.Close();
+                    return;
+                }
+                catch (Exception)
+                {
+                    Thread.Sleep(1000);
+                    continue;
+                }
             }
-            catch (Exception)
-            {
-                return false;
-            }
+            throw new Exception("Unable to connect to server after 10 minutes");
+        }
+
+        public int GetTotalLocations()
+        {
+            return FlightDataList.Count();
         }
     }
 }

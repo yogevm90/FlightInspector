@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FlightExaminator.Models;
+using FlightExaminator.ViewModels;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FlightExaminator
 {
@@ -21,20 +10,17 @@ namespace FlightExaminator
     /// </summary>
     public partial class MainWindow : Window
     {
-        SimulatorRunner sm;
+        public static SimulatorRunner Runner;
         public MainWindow()
         {
+            SimulatorRunner sm = new SimulatorRunner(5400);
+            FlightDataViewModel flightDataVm = new FlightDataViewModel(new FlightDataModel(), 75);
+            PlaybackViewModel playbackVm = new PlaybackViewModel(new PlaybackModel(100, sm));
+            SimulationConfigurationViewModel simulationConfigurationVm = new SimulationConfigurationViewModel(new SimulationConfigurationModel(sm));
             InitializeComponent();
-            string currentPath = Directory.GetCurrentDirectory();
-            string configFile = currentPath + @"\ConfigurationFiles\playback_small.xml";
-            string simulatorPath = @"C:\Program Files\FlightGear 2018.3.5";
-            string flightData = currentPath + @"\FlightDataExamples\reg_flight.csv";
-            sm = new SimulatorRunner(configFile, simulatorPath, flightData, 5400);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            sm.InsertDataTask();
+            FlightDataView.VM = flightDataVm;
+            PlaybackView.VM = playbackVm;
+            SimulationConfigurationView.VM = simulationConfigurationVm;
         }
     }
 }
