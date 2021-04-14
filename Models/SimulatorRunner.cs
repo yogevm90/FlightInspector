@@ -15,19 +15,13 @@ namespace FlightExaminator
         public string SimulatorCongifFilePath { get; set; }
         public string FlightDataPath { get; set; }
         private List<string> FlightDataList { get; set; }
-        public int MiliSecondsBetweenIterations { get; set; }
-        public int NextDataLocation { get; set; }
         private int Port { get; set; }
-        public bool InsertData { get; set; }
         public bool Ready { get; set; }
         
 
         public SimulatorRunner(int port)
         {
             Port = port;
-            MiliSecondsBetweenIterations = 100;
-            NextDataLocation = 0;
-            InsertData = false;
             Ready = false;
         }
 
@@ -78,34 +72,27 @@ namespace FlightExaminator
             process.Start();
         }
 
-        public void InsertDataTask()
+        public void SendData(int nextLocation)
         {
-            if (!Ready) return;
-            InsertData = true;
-            Thread thread = new Thread(InsertDataToSimulator);
-            thread.Start();
-        }
-
-        private void InsertDataToSimulator()
-        {
-            TcpClient client = new TcpClient("127.0.0.1", Port);
-            NetworkStream stream = client.GetStream();
-            while (InsertData)
+            TcpClient client = null;
+            NetworkStream stream = null;
+            try
             {
-                Byte[] data = Encoding.ASCII.GetBytes(FlightDataList.ElementAt(NextDataLocation) + "\n");
+                client = new TcpClient("127.0.0.1", Port);
+                stream = client.GetStream();
+                Byte[] data = Encoding.ASCII.GetBytes(FlightDataList.ElementAt(nextLocation) + "\n");
                 stream.Write(data, 0, data.Length);
                 stream.Flush();
-
-                NextDataLocation++;
-                if (NextDataLocation >= FlightDataList.Count())
-                {
-                    InsertData = false;
-                    NextDataLocation = 0;
-                }
-                Thread.Sleep(MiliSecondsBetweenIterations);
             }
-            stream.Close();
-            client.Close();
+            catch (Exception e) 
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                if (stream != null) { stream.Close(); }
+                if (client != null) { client.Close(); }
+            }
         }
 
         public void CheckServerAvailability()
@@ -120,7 +107,7 @@ namespace FlightExaminator
                 }
                 catch (Exception)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(5000);
                     continue;
                 }
             }

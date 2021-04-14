@@ -1,5 +1,7 @@
 ﻿using FlightExaminator.Models.Interfaces;
 using System.ComponentModel;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace FlightExaminator.Models
 {
@@ -7,6 +9,8 @@ namespace FlightExaminator.Models
     {
         private SimulatorRunner runner;
         private int totalLocations;
+        private int sleepTime;
+
         public int TotalLocations 
         { 
             get { return totalLocations; } 
@@ -17,12 +21,13 @@ namespace FlightExaminator.Models
             }
         }
 
+        private int nextDataLocation;
         public int NextDataLocation
         {
-            get { return runner.NextDataLocation; }
+            get { return nextDataLocation; }
             set 
             { 
-                runner.NextDataLocation = value;
+                nextDataLocation = value;
                 NotifyPropertyChanged("NextDataLocation");
             }
         }
@@ -37,32 +42,34 @@ namespace FlightExaminator.Models
                 if (value == 0)
                 {
                     Play = false;
+                    sleepTime = 100;
                 }
                 if (value == 2)
                 {
-                    runner.MiliSecondsBetweenIterations = 50;
+                    sleepTime = 50;
                 }
                 else
                 {
-                    runner.MiliSecondsBetweenIterations = (int)(100 * (1 / playbackSpeed));
+                    sleepTime = (int)(100 * (1 / playbackSpeed));
                 }
                 NotifyPropertyChanged("PlaybackSpeed");
             }
         }
 
+        private bool play;
         public bool Play
         {
             get
             {
-                return runner.InsertData;
+                return play;
             }
             set
             {
                 if (runner.Ready)
                 {
+                    play = true;
                     TotalLocations = runner.GetTotalLocations();
-                    runner.InsertData = value;
-                    runner.InsertDataTask();
+                    InsertDataTask();
                 }
             }
         }
@@ -73,13 +80,35 @@ namespace FlightExaminator.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public PlaybackModel(int totalLocations, SimulatorRunner runner)
+        public PlaybackModel(SimulatorRunner runner)
         {
             this.runner = runner;
-            TotalLocations = totalLocations;
             Play = false;
+            sleepTime = 100;
             PlaybackSpeed = 1;
             NextDataLocation = 0;
+        }
+
+        public void InsertDataTask()
+        {
+            if (!runner.Ready) return;
+            Thread thread = new Thread(InsertDataToSimulator);
+            thread.Start();
+        }
+
+        private void InsertDataToSimulator()
+        {
+            while (Play)
+            {
+                runner.SendData(NextDataLocation);
+                NextDataLocation++;
+                if (NextDataLocation >= TotalLocations)
+                {
+                    Play = false;
+                    NextDataLocation = 0;
+                }
+                Thread.Sleep(sleepTime);
+            }
         }
     }
 }

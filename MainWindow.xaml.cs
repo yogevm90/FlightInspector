@@ -15,7 +15,7 @@ namespace FlightExaminator
         {
             SimulatorRunner sm = new SimulatorRunner(5400);
             FlightDataViewModel flightDataVm = new FlightDataViewModel(new FlightDataModel(), 75);
-            PlaybackViewModel playbackVm = new PlaybackViewModel(new PlaybackModel(100, sm));
+            PlaybackViewModel playbackVm = new PlaybackViewModel(new PlaybackModel(sm));
             SimulationConfigurationViewModel simulationConfigurationVm = new SimulationConfigurationViewModel(new SimulationConfigurationModel(sm));
             InitializeComponent();
             FlightDataView.VM = flightDataVm;
