@@ -16,7 +16,7 @@ Framework:
 - Project consists of only .NET Framework 4.7.2, No need to install any other components (except FlightGear of course)
 
 Installation:
-- Inside bin folder you will find a compiled version of the code, you can either run the exe there or recompile solution.
+- Inside 'Executable' folder you will find a compiled version of the code, you can either run the exe there or recompile solution.
 
 Diagrams:
 - Project diagrams located on main folder - in png and in cd format (to look inside solution)
