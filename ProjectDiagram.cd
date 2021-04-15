@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FlightExaminator.Models.FlightDataModel" Collapsed="true">
+    <Position X="8.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAgAgkAIAIBAAAAAQAgAAAAAAAEAAAABAAAAA=</HashCode>
+      <FileName>Models\FlightDataModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlightExaminator.Models.PlaybackModel" Collapsed="true">
+    <Position X="5.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAJAAAQIQQAECgACQAABAgAAAAAAAAAA=</HashCode>
+      <FileName>Models\PlaybackModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlightExaminator.Models.SimulationConfigurationModel" Collapsed="true">
+    <Position X="11" Y="13.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAIAkAAAAAAAAggAAAAIAAAAAYAAAICA=</HashCode>
+      <FileName>Models\SimulationConfigurationModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlightExaminator.SimulatorRunner">
+    <Position X="1.5" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAgAAAAEAIAQIAkAAQAAAAAACIAAAAAAAAAQAAQAIAA=</HashCode>
+      <FileName>Models\SimulatorRunner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlightExaminator.ViewModels.FlightDataViewModel">
+    <Position X="8" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAgAAAAAAAgAAAAAABBAAAAAIIACA=</HashCode>
+      <FileName>ViewModels\FlightDataViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlightExaminator.ViewModels.PlaybackViewModel">
+    <Position X="5" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABIAAAAAIAAAAAAAAAAgAAAAAAAAAAIAABIAAA=</HashCode>
+      <FileName>ViewModels\PlaybackViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlightExaminator.ViewModels.SimulationConfigurationViewModel">
+    <Position X="10.75" Y="6.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAEAAAAAAAAgAEAAAAQAAAAEAAIQAA=</HashCode>
+      <FileName>ViewModels\SimulationConfigurationViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlightExaminator.Views.PlaybackView">
+    <Position X="5.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAgAAAAAAAICQAAAAIAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Views\PlaybackView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlightExaminator.Views.SimulationConfigurationView">
+    <Position X="10.75" Y="2.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAABAACAAAABBAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Views\SimulationConfigurationView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlightExaminator.Views.FlightDataView">
+    <Position X="8.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\FlightDataView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlightExaminator.MainWindow">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="FlightExaminator.Models.Interfaces.IFlightDataModel">
+    <Position X="8.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAgAAAAABAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Models\Interfaces\IFlightDataModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FlightExaminator.Models.Interfaces.IPlaybackModel">
+    <Position X="5.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQIQAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Models\Interfaces\IPlaybackModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FlightExaminator.Models.Interfaces.ISimulationConfigurationModel">
+    <Position X="10.75" Y="10" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAgAAAAAAAAAAYAAAICA=</HashCode>
+      <FileName>Models\Interfaces\ISimulationConfigurationModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
